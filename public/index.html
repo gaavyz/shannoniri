@@ -241,17 +241,33 @@ function applyStart(){const t=L[lang];document.getElementById('s-head').textCont
 function pickAlc(v){withAlc=v;document.getElementById('btn-alc').classList.toggle('sel',v===true);document.getElementById('btn-noalc').classList.toggle('sel',v===false);document.getElementById('start-btn').classList.add('on');}
 function startQuiz(){qIdx=0;tags=[];show('screen-questions');renderQ();}
 function renderQ(){
-  const qs=L[lang].qs,q=qs[qIdx],tot=qs.length;
-  document.getElementById('prog-fill').style.width=((qIdx/tot)*100)+'%';
-  document.getElementById('prog-lbl').textContent=L[lang].prog(qIdx+1,tot);
+  const qs=L[lang].qs,q=qs[qIdx];
+  // Total real: si sin alcohol, restar la pregunta de base alcohólica
+  const tot=withAlc?qs.length:qs.length-1;
+  // Posición visual: si sin alcohol y ya pasamos la pregunta de base, restar 1
+  const alcQIdx=qs.findIndex(isAlcoholQuestion);
+  const visIdx=(!withAlc && qIdx>alcQIdx)?qIdx-1:qIdx;
+  document.getElementById('prog-fill').style.width=(((visIdx)/tot)*100)+'%';
+  document.getElementById('prog-lbl').textContent=L[lang].prog(visIdx+1,tot);
   document.getElementById('q-text').textContent=q.t;
   const c=document.getElementById('q-opts');c.innerHTML='';
   q.o.forEach(opt=>{const b=document.createElement('button');b.className='q-opt';b.textContent=opt.t;b.onclick=()=>pick(opt,b);c.appendChild(b);});
 }
+function isAlcoholQuestion(q){
+  // Detecta si es la pregunta de base alcohólica por sus tags
+  return q.o && q.o.some(o=>o.g && (o.g.includes('gin')||o.g.includes('ron')||o.g.includes('rum')));
+}
 function pick(opt,btn){
   document.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');
   tags=[...tags,...opt.g];
-  setTimeout(()=>{qIdx++;if(qIdx<L[lang].qs.length)renderQ();else generate();},300);
+  setTimeout(()=>{
+    qIdx++;
+    // Si sin alcohol, saltar la pregunta de base alcohólica
+    if(!withAlc && qIdx<L[lang].qs.length && isAlcoholQuestion(L[lang].qs[qIdx])){
+      qIdx++;
+    }
+    if(qIdx<L[lang].qs.length)renderQ();else generate();
+  },300);
 }
 function tickLoad(){const row=L[lang].ll[loadTick%3];document.getElementById('l-title').textContent=row[0];document.getElementById('l-sub').textContent=row[1];loadTick++;}
 function startLoad(){loadTick=0;tickLoad();loadInt=setInterval(tickLoad,1800);}
