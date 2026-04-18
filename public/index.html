@@ -7,385 +7,87 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,500&family=Lato:wght@300;400;700&display=swap" rel="stylesheet" />
   <style>
-    :root {
-      --gold:     #c9922a;
-      --gold-l:   #e8b84b;
-      --dark:     #1a1208;
-      --dark2:    #231809;
-      --green:    #1b4332;
-      --cream:    #f5edd8;
-      --cdim:     rgba(245,237,216,.62);
-      --bord:     rgba(201,146,42,.22);
-      --surf:     rgba(255,255,255,.04);
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      height: 100%;
-      font-family: 'Lato', sans-serif;
-      background: var(--dark);
-      color: var(--cream);
-    }
-
-    /* ── celtic stripe top ─────────────────────── */
-    body::before {
-      content: '';
-      position: fixed;
-      top: 0; left: 0; right: 0;
-      height: 4px;
-      z-index: 100;
-      background: repeating-linear-gradient(
-        90deg,
-        var(--gold) 0, var(--gold) 14px,
-        var(--green) 14px, var(--green) 28px
-      );
-    }
-
-    /* ── layout ────────────────────────────────── */
-    #wrap {
-      min-height: 100vh;
-      padding: 4px 0 0;          /* space for celtic stripe */
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-    }
-
-    #card {
-      width: 100%;
-      max-width: 480px;
-      padding: 0 16px 40px;
-    }
-
-    /* ── lang toggle ───────────────────────────── */
-    .lang-toggle {
-      display: flex;
-      justify-content: flex-end;
-      margin: 20px 0 0;
-    }
-    .lang-wrap {
-      display: flex;
-      background: rgba(255,255,255,.07);
-      border-radius: 20px;
-      padding: 3px;
-      border: .5px solid var(--bord);
-    }
-    .lang-btn {
-      padding: 4px 14px;
-      font-size: 12px;
-      font-family: 'Lato', sans-serif;
-      font-weight: 700;
-      letter-spacing: .05em;
-      cursor: pointer;
-      border: none;
-      border-radius: 16px;
-      background: transparent;
-      color: rgba(245,237,216,.4);
-      transition: all .2s;
-    }
-    .lang-btn.active { background: var(--gold); color: var(--dark); }
-
-    /* ── screens ───────────────────────────────── */
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    /* ── START ─────────────────────────────────── */
-    #screen-start { text-align: center; padding-top: 2rem; }
-    .shamrock {
-      font-size: 52px;
-      display: block;
-      filter: drop-shadow(0 0 16px rgba(201,146,42,.55));
-      margin-bottom: 8px;
-    }
-    .pub-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 30px;
-      font-weight: 700;
-      color: var(--gold);
-      letter-spacing: .02em;
-    }
-    .pub-sub {
-      font-size: 11px;
-      letter-spacing: .2em;
-      color: rgba(245,237,216,.35);
-      margin-top: 5px;
-      text-transform: uppercase;
-    }
-    .div-line {
-      width: 60px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 1.5rem auto;
-    }
-    .s-head {
-      font-family: 'Playfair Display', serif;
-      font-size: 21px;
-      font-style: italic;
-      color: var(--cream);
-      margin-bottom: 10px;
-    }
-    .s-desc {
-      font-size: 14px;
-      color: var(--cdim);
-      line-height: 1.65;
-      max-width: 360px;
-      margin: 0 auto 2rem;
-    }
-
-    /* alcohol choice */
-    .alc-row {
-      display: flex;
-      gap: 12px;
-      margin-bottom: 2rem;
-    }
-    .alc-btn {
-      flex: 1;
-      padding: 14px 10px;
-      border-radius: 10px;
-      cursor: pointer;
-      border: 1px solid var(--bord);
-      background: var(--surf);
-      color: rgba(245,237,216,.6);
-      font-family: 'Lato', sans-serif;
-      font-size: 13px;
-      font-weight: 700;
-      transition: all .2s;
-      text-align: center;
-      line-height: 1.4;
-    }
-    .alc-btn .ico { font-size: 24px; display: block; margin-bottom: 6px; }
-    .alc-btn:hover { border-color: var(--gold); color: var(--cream); }
-    .alc-btn.sel {
-      background: rgba(201,146,42,.18);
-      border-color: var(--gold);
-      color: var(--gold-l);
-    }
-
-    .cta {
-      width: 100%;
-      padding: 15px;
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      font-weight: 700;
-      letter-spacing: .12em;
-      text-transform: uppercase;
-      cursor: pointer;
-      border-radius: 10px;
-      border: none;
-      background: var(--gold);
-      color: var(--dark);
-      transition: all .2s;
-      opacity: .35;
-      pointer-events: none;
-    }
-    .cta.on { opacity: 1; pointer-events: all; }
-    .cta.on:hover { background: var(--gold-l); }
-
-    /* ── QUESTIONS ─────────────────────────────── */
-    #screen-questions { padding-top: 1.5rem; }
-    .prog-wrap {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 1.75rem;
-    }
-    .prog-track {
-      flex: 1; height: 2px;
-      background: rgba(255,255,255,.1);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-    .prog-fill {
-      height: 100%;
-      background: var(--gold);
-      border-radius: 2px;
-      transition: width .4s ease;
-    }
-    .prog-lbl { font-size: 11px; color: rgba(245,237,216,.38); letter-spacing: .08em; white-space: nowrap; }
-    .q-text {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      color: var(--cream);
-      line-height: 1.45;
-      margin-bottom: 1.5rem;
-    }
-    .q-opts { display: flex; flex-direction: column; gap: 10px; }
-    .q-opt {
-      padding: 14px 18px;
-      border-radius: 10px;
-      cursor: pointer;
-      border: 1px solid var(--bord);
-      background: var(--surf);
-      color: rgba(245,237,216,.75);
-      font-family: 'Lato', sans-serif;
-      font-size: 14px;
-      line-height: 1.4;
-      text-align: left;
-      transition: all .18s;
-    }
-    .q-opt:hover { border-color: rgba(201,146,42,.6); color: var(--cream); background: rgba(201,146,42,.07); }
-    .q-opt.sel { border-color: var(--gold); background: rgba(201,146,42,.15); color: var(--gold-l); }
-
-    /* ── LOADING ───────────────────────────────── */
-    #screen-loading {
-      text-align: center;
-      padding: 5rem 1rem;
-    }
-    .pint {
-      width: 56px; height: 70px;
-      border: 2px solid rgba(201,146,42,.3);
-      border-radius: 0 0 10px 10px;
-      position: relative;
-      margin: 0 auto 1.75rem;
-      overflow: hidden;
-    }
-    .pint-fill {
-      position: absolute;
-      bottom: 0; left: 0; right: 0;
-      background: var(--gold);
-      opacity: .7;
-      animation: fu 2s ease-in-out infinite alternate;
-    }
-    @keyframes fu { from { height: 12%; } to { height: 92%; } }
-    .l-title {
-      font-family: 'Playfair Display', serif;
-      font-size: 20px;
-      font-style: italic;
-      color: var(--cream);
-      margin-bottom: 8px;
-    }
-    .l-sub { font-size: 13px; color: rgba(245,237,216,.42); }
-
-    /* ── RESULT ────────────────────────────────── */
-    #screen-result { padding-top: 1.5rem; }
-    .r-head { text-align: center; margin-bottom: 1.5rem; }
-    .r-emoji { font-size: 56px; margin-bottom: 10px; display: block; }
-    .r-badges {
-      display: flex; gap: 8px;
-      justify-content: center; flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-    .r-badge {
-      display: inline-block;
-      padding: 4px 14px;
-      font-size: 10px; letter-spacing: .14em;
-      text-transform: uppercase; font-weight: 700;
-      border: 1px solid rgba(201,146,42,.4);
-      border-radius: 20px; color: var(--gold);
-    }
-    .r-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 26px; font-weight: 700;
-      color: var(--cream); margin-bottom: 8px;
-    }
-    .r-tagline {
-      font-family: 'Playfair Display', serif;
-      font-size: 15px; font-style: italic;
-      color: rgba(245,237,216,.52); line-height: 1.55;
-      max-width: 340px; margin: 0 auto;
-    }
-    .gdiv {
-      width: 50px; height: 1px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-      margin: 1.5rem auto;
-    }
-    .card {
-      background: var(--surf);
-      border: 1px solid var(--bord);
-      border-radius: 12px;
-      padding: 1.125rem 1.25rem;
-      margin-bottom: 12px;
-    }
-    .clbl {
-      font-size: 10px; letter-spacing: .14em;
-      text-transform: uppercase; font-weight: 700;
-      color: var(--gold); margin-bottom: 12px;
-    }
-    .meta-row { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 12px; }
-    .meta-i { font-size: 13px; color: rgba(245,237,216,.48); }
-    .meta-i b { color: var(--cream); font-weight: 700; }
-    .ing-list { display: flex; flex-direction: column; gap: 8px; }
-    .ing-i {
-      display: flex; gap: 12px;
-      align-items: flex-start;
-      font-size: 14px; color: rgba(245,237,216,.8); line-height: 1.4;
-    }
-    .idot {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--gold); flex-shrink: 0; margin-top: 7px;
-    }
-    .iqty { color: var(--gold-l); font-weight: 700; min-width: 56px; }
-    .steps { display: flex; flex-direction: column; gap: 10px; }
-    .step-i {
-      display: flex; gap: 14px;
-      font-size: 14px; color: rgba(245,237,216,.8); line-height: 1.55;
-    }
-    .sn {
-      color: var(--gold); font-weight: 700;
-      min-width: 18px;
-      font-family: 'Playfair Display', serif;
-    }
-    .bt-note {
-      font-family: 'Playfair Display', serif;
-      font-size: 14px; font-style: italic;
-      color: rgba(245,237,216,.52); line-height: 1.6; text-align: center;
-    }
-    .act-btns { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; }
-    .abtn {
-      width: 100%; padding: 14px;
-      font-family: 'Lato', sans-serif;
-      font-size: 13px; font-weight: 700;
-      letter-spacing: .07em; text-transform: uppercase;
-      cursor: pointer; border-radius: 10px; transition: all .2s;
-    }
-    .abtn.gold { background: var(--gold); color: var(--dark); border: none; }
-    .abtn.gold:hover { background: var(--gold-l); }
-    .abtn.out {
-      background: transparent;
-      border: 1px solid var(--bord);
-      color: rgba(245,237,216,.7);
-    }
-    .abtn.out:hover { border-color: var(--gold); color: var(--cream); }
-
-    /* error */
-    .err-wrap { text-align: center; padding: 3rem 1rem; }
-    .err-msg { color: #e07a7a; font-size: 15px; line-height: 1.7; margin-bottom: 1.5rem; }
-    .err-detail {
-      background: rgba(255,255,255,.04);
-      border: 1px solid rgba(200,80,80,.2);
-      border-radius: 8px;
-      padding: 10px 14px;
-      font-size: 12px;
-      color: rgba(245,237,216,.35);
-      text-align: left;
-      word-break: break-all;
-      margin-bottom: 1.25rem;
-    }
-
-    /* ── footer ─────────────────────────────────── */
-    .footer {
-      text-align: center;
-      margin-top: 2.5rem;
-      font-size: 11px;
-      color: rgba(245,237,216,.2);
-      letter-spacing: .08em;
-    }
+    :root{--gold:#c9922a;--gold-l:#e8b84b;--dark:#1a1208;--green:#1b4332;--cream:#f5edd8;--cdim:rgba(245,237,216,.62);--bord:rgba(201,146,42,.22);--surf:rgba(255,255,255,.04);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;font-family:'Lato',sans-serif;background:var(--dark);color:var(--cream);}
+    body::before{content:'';position:fixed;top:0;left:0;right:0;height:4px;z-index:100;background:repeating-linear-gradient(90deg,var(--gold) 0,var(--gold) 14px,var(--green) 14px,var(--green) 28px);}
+    #wrap{min-height:100vh;padding:4px 0 0;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+    #card{width:100%;max-width:480px;padding:0 16px 40px;}
+    .lang-toggle{display:flex;justify-content:flex-end;margin:20px 0 0;}
+    .lang-wrap{display:flex;background:rgba(255,255,255,.07);border-radius:20px;padding:3px;border:.5px solid var(--bord);}
+    .lang-btn{padding:4px 14px;font-size:12px;font-family:'Lato',sans-serif;font-weight:700;letter-spacing:.05em;cursor:pointer;border:none;border-radius:16px;background:transparent;color:rgba(245,237,216,.4);transition:all .2s;}
+    .lang-btn.active{background:var(--gold);color:var(--dark);}
+    .screen{display:none;}.screen.active{display:block;}
+    #screen-start{text-align:center;padding-top:2rem;}
+    .shamrock{font-size:52px;display:block;filter:drop-shadow(0 0 16px rgba(201,146,42,.55));margin-bottom:8px;}
+    .pub-name{font-family:'Playfair Display',serif;font-size:30px;font-weight:700;color:var(--gold);letter-spacing:.02em;}
+    .pub-sub{font-size:11px;letter-spacing:.2em;color:rgba(245,237,216,.35);margin-top:5px;text-transform:uppercase;}
+    .div-line{width:60px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:1.5rem auto;}
+    .s-head{font-family:'Playfair Display',serif;font-size:21px;font-style:italic;color:var(--cream);margin-bottom:10px;}
+    .s-desc{font-size:14px;color:var(--cdim);line-height:1.65;max-width:360px;margin:0 auto 2rem;}
+    .alc-row{display:flex;gap:12px;margin-bottom:2rem;}
+    .alc-btn{flex:1;padding:14px 10px;border-radius:10px;cursor:pointer;border:1px solid var(--bord);background:var(--surf);color:rgba(245,237,216,.6);font-family:'Lato',sans-serif;font-size:13px;font-weight:700;transition:all .2s;text-align:center;line-height:1.4;}
+    .alc-btn .ico{font-size:24px;display:block;margin-bottom:6px;}
+    .alc-btn:hover{border-color:var(--gold);color:var(--cream);}
+    .alc-btn.sel{background:rgba(201,146,42,.18);border-color:var(--gold);color:var(--gold-l);}
+    .cta{width:100%;padding:15px;font-family:'Lato',sans-serif;font-size:14px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer;border-radius:10px;border:none;background:var(--gold);color:var(--dark);transition:all .2s;opacity:.35;pointer-events:none;}
+    .cta.on{opacity:1;pointer-events:all;}.cta.on:hover{background:var(--gold-l);}
+    #screen-questions{padding-top:1.5rem;}
+    .prog-wrap{display:flex;align-items:center;gap:10px;margin-bottom:1.75rem;}
+    .prog-track{flex:1;height:2px;background:rgba(255,255,255,.1);border-radius:2px;overflow:hidden;}
+    .prog-fill{height:100%;background:var(--gold);border-radius:2px;transition:width .4s ease;}
+    .prog-lbl{font-size:11px;color:rgba(245,237,216,.38);letter-spacing:.08em;white-space:nowrap;}
+    .q-text{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);line-height:1.45;margin-bottom:1.5rem;}
+    .q-opts{display:flex;flex-direction:column;gap:10px;}
+    .q-opt{padding:14px 18px;border-radius:10px;cursor:pointer;border:1px solid var(--bord);background:var(--surf);color:rgba(245,237,216,.75);font-family:'Lato',sans-serif;font-size:14px;line-height:1.4;text-align:left;transition:all .18s;}
+    .q-opt:hover{border-color:rgba(201,146,42,.6);color:var(--cream);background:rgba(201,146,42,.07);}
+    .q-opt.sel{border-color:var(--gold);background:rgba(201,146,42,.15);color:var(--gold-l);}
+    #screen-loading{text-align:center;padding:5rem 1rem;}
+    .pint{width:56px;height:70px;border:2px solid rgba(201,146,42,.3);border-radius:0 0 10px 10px;position:relative;margin:0 auto 1.75rem;overflow:hidden;}
+    .pint-fill{position:absolute;bottom:0;left:0;right:0;background:var(--gold);opacity:.7;animation:fu 2s ease-in-out infinite alternate;}
+    @keyframes fu{from{height:12%}to{height:92%}}
+    .l-title{font-family:'Playfair Display',serif;font-size:20px;font-style:italic;color:var(--cream);margin-bottom:8px;}
+    .l-sub{font-size:13px;color:rgba(245,237,216,.42);}
+    #screen-result{padding-top:1.5rem;}
+    .r-head{text-align:center;margin-bottom:1.5rem;}
+    .r-emoji{font-size:56px;margin-bottom:10px;display:block;}
+    .r-badges{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:12px;}
+    .r-badge{display:inline-block;padding:4px 14px;font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;border:1px solid rgba(201,146,42,.4);border-radius:20px;color:var(--gold);}
+    .r-name{font-family:'Playfair Display',serif;font-size:26px;font-weight:700;color:var(--cream);margin-bottom:8px;}
+    .r-tagline{font-family:'Playfair Display',serif;font-size:15px;font-style:italic;color:rgba(245,237,216,.52);line-height:1.55;max-width:340px;margin:0 auto;}
+    .gdiv{width:50px;height:1px;background:linear-gradient(90deg,transparent,var(--gold),transparent);margin:1.5rem auto;}
+    .card{background:var(--surf);border:1px solid var(--bord);border-radius:12px;padding:1.125rem 1.25rem;margin-bottom:12px;}
+    .clbl{font-size:10px;letter-spacing:.14em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:12px;}
+    .meta-row{display:flex;gap:20px;flex-wrap:wrap;margin-bottom:12px;}
+    .meta-i{font-size:13px;color:rgba(245,237,216,.48);}
+    .meta-i b{color:var(--cream);font-weight:700;}
+    .ing-list{display:flex;flex-direction:column;gap:8px;}
+    .ing-i{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:rgba(245,237,216,.8);line-height:1.4;}
+    .idot{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:7px;}
+    .iqty{color:var(--gold-l);font-weight:700;min-width:56px;}
+    .steps{display:flex;flex-direction:column;gap:10px;}
+    .step-i{display:flex;gap:14px;font-size:14px;color:rgba(245,237,216,.8);line-height:1.55;}
+    .sn{color:var(--gold);font-weight:700;min-width:18px;font-family:'Playfair Display',serif;}
+    .bt-note{font-family:'Playfair Display',serif;font-size:14px;font-style:italic;color:rgba(245,237,216,.52);line-height:1.6;text-align:center;}
+    .act-btns{display:flex;flex-direction:column;gap:10px;margin-top:6px;}
+    .abtn{width:100%;padding:14px;font-family:'Lato',sans-serif;font-size:13px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;cursor:pointer;border-radius:10px;transition:all .2s;}
+    .abtn.gold{background:var(--gold);color:var(--dark);border:none;}.abtn.gold:hover{background:var(--gold-l);}
+    .abtn.out{background:transparent;border:1px solid var(--bord);color:rgba(245,237,216,.7);}.abtn.out:hover{border-color:var(--gold);color:var(--cream);}
+    .err-wrap{text-align:center;padding:3rem 1rem;}
+    .err-msg{color:#e07a7a;font-size:15px;line-height:1.7;margin-bottom:1.5rem;}
+    .err-detail{background:rgba(255,255,255,.04);border:1px solid rgba(200,80,80,.2);border-radius:8px;padding:10px 14px;font-size:12px;color:rgba(245,237,216,.35);text-align:left;word-break:break-all;margin-bottom:1.25rem;}
+    .footer{text-align:center;margin-top:2.5rem;font-size:11px;color:rgba(245,237,216,.2);letter-spacing:.08em;}
   </style>
 </head>
 <body>
-
 <div id="wrap">
   <div id="card">
-
-    <!-- lang toggle -->
     <div class="lang-toggle">
       <div class="lang-wrap">
         <button class="lang-btn active" onclick="setLang('es')">ES</button>
         <button class="lang-btn" onclick="setLang('en')">EN</button>
       </div>
     </div>
-
-    <!-- START -->
     <div id="screen-start" class="screen active">
       <span class="shamrock">☘️</span>
       <div class="pub-name">Shannon Iris Pub</div>
@@ -394,19 +96,11 @@
       <div class="s-head" id="s-head"></div>
       <div class="s-desc" id="s-desc"></div>
       <div class="alc-row">
-        <button class="alc-btn" id="btn-alc" onclick="pickAlc(true)">
-          <span class="ico">🥃</span><span id="lbl-alc"></span>
-        </button>
-        <button class="alc-btn" id="btn-noalc" onclick="pickAlc(false)">
-          <span class="ico">🧃</span><span id="lbl-noalc"></span>
-        </button>
+        <button class="alc-btn" id="btn-alc" onclick="pickAlc(true)"><span class="ico">🥃</span><span id="lbl-alc"></span></button>
+        <button class="alc-btn" id="btn-noalc" onclick="pickAlc(false)"><span class="ico">🧃</span><span id="lbl-noalc"></span></button>
       </div>
-      <button class="cta" id="start-btn" onclick="startQuiz()">
-        <span id="lbl-start"></span>
-      </button>
+      <button class="cta" id="start-btn" onclick="startQuiz()"><span id="lbl-start"></span></button>
     </div>
-
-    <!-- QUESTIONS -->
     <div id="screen-questions" class="screen">
       <div class="prog-wrap">
         <div class="prog-track"><div class="prog-fill" id="prog-fill"></div></div>
@@ -415,327 +109,247 @@
       <div class="q-text" id="q-text"></div>
       <div class="q-opts" id="q-opts"></div>
     </div>
-
-    <!-- LOADING -->
     <div id="screen-loading" class="screen">
       <div class="pint"><div class="pint-fill"></div></div>
       <div class="l-title" id="l-title"></div>
       <div class="l-sub" id="l-sub"></div>
     </div>
-
-    <!-- RESULT -->
     <div id="screen-result" class="screen">
       <div id="result-content"></div>
     </div>
-
     <div class="footer">Shannon Iris Pub &copy; 2025</div>
   </div>
 </div>
-
 <script>
-// ── Translations & Questions ─────────────────────────────────
-const L = {
-  es: {
-    head: 'Encuentra tu cóctel perfecto',
-    desc: 'Responde unas preguntas y nuestro bartender IA creará un cóctel único para tu personalidad.',
-    lAlc: 'Con alcohol', lNoAlc: 'Sin alcohol', lStart: 'Comenzar →',
-    prog: (c, t) => `${c} de ${t}`,
-    ll: [
-      ['Analizando tu personalidad…', 'Combinando tus sabores'],
-      ['Eligiendo los ingredientes…', 'Creando algo especial'],
-      ['¡Casi listo!', 'El toque final'],
-    ],
-    sI:'Ingredientes', sP:'Preparación', sN:'Nota del bartender',
-    mV:'Vaso', mT:'Técnica',
-    bA: '¿Quieres una variación?', bW: '¿Por qué estos sabores?', bR: '← Repetir el test',
-    errTitle: 'Algo salió mal', errHint: 'Inténtalo de nuevo.',
-    retry: 'Reintentar',
-    qs: [
-      { t: '¿Cómo es tu noche perfecta?', o: [
-        { t: 'Fiesta con mucha gente y música alta',     g: ['extrovertido','festivo','energético'] },
-        { t: 'Cena íntima con amigos cercanos',           g: ['social','cálido','refinado'] },
-        { t: 'Noche tranquila en casa',                   g: ['introvertido','reflexivo','suave'] },
-        { t: 'Aventura espontánea, sin planes',           g: ['aventurero','audaz','fresco'] },
-      ]},
-      { t: '¿Qué sabor te llama más?', o: [
-        { t: 'Tropical y exótico (maracuyá, mango, coco)',     g: ['tropical','dulce','exótico'] },
-        { t: 'Fresco y frutal (fresa, frambuesa, sandía)',     g: ['fresco','frutal','vibrante'] },
-        { t: 'Cítrico y luminoso (mandarina, yuzu, manzana)', g: ['cítrico','ácido','luminoso'] },
-        { t: 'Suave y reconfortante (melón, guayaba, piña)',   g: ['suave','reconfortante','equilibrado'] },
-      ]},
-      { t: '¿Con qué palabra te identificas?', o: [
-        { t: 'Apasionado/a', g: ['intenso','apasionado'] },
-        { t: 'Tranquilo/a',  g: ['tranquilo','suave'] },
-        { t: 'Creativo/a',   g: ['creativo','original'] },
-        { t: 'Aventurero/a', g: ['audaz','atrevido'] },
-      ]},
-      { t: '¿Qué música escuchas?', o: [
-        { t: 'Electrónica / Dance',        g: ['energético','moderno'] },
-        { t: 'Jazz / Soul / Blues',         g: ['clásico','ahumado'] },
-        { t: 'Rock / Indie',                g: ['audaz','intenso'] },
-        { t: 'Pop / Reggaeton / Latina',    g: ['festivo','alegre'] },
-      ]},
-      { t: '¿Tu relación con lo dulce?', o: [
-        { t: 'Me encanta, cuanto más dulce mejor',    g: ['muy_dulce','afrutado'] },
-        { t: 'Un toque dulce está perfecto',           g: ['semi_dulce','equilibrado'] },
-        { t: 'Prefiero ácido o amargo',               g: ['ácido','seco','complejo'] },
-        { t: 'Me gustan los contrastes dulce-ácido',  g: ['agridulce','complejo'] },
-      ]},
-      { t: '¿Si fueras un lugar, cuál serías?', o: [
-        { t: 'Una playa tropical al atardecer',  g: ['tropical','relajado','cálido'] },
-        { t: 'Un bosque tranquilo al amanecer',  g: ['natural','fresco'] },
-        { t: 'Una ciudad vibrante de noche',     g: ['urbano','sofisticado'] },
-        { t: 'Un mercado colorido y animado',    g: ['vivaz','frutal'] },
-      ]},
-    ],
-  },
-  en: {
-    head: 'Find your perfect cocktail',
-    desc: 'Answer a few questions and our AI bartender will craft a unique cocktail just for you.',
-    lAlc: 'With alcohol', lNoAlc: 'Mocktail', lStart: "Let's go →",
-    prog: (c, t) => `${c} of ${t}`,
-    ll: [
-      ['Analysing your personality…', 'Blending your flavours'],
-      ['Selecting ingredients…',      'Creating something special'],
-      ['Almost ready!',               'The final touch'],
-    ],
-    sI:'Ingredients', sP:'Preparation', sN:"Bartender's note",
-    mV:'Glass', mT:'Technique',
-    bA: 'Want a variation?', bW: 'Why these flavours?', bR: '← Take the quiz again',
-    errTitle: 'Something went wrong', errHint: 'Please try again.',
-    retry: 'Retry',
-    qs: [
-      { t: 'What does your perfect evening look like?', o: [
-        { t: 'Big party with loud music',          g: ['extrovert','festive','energetic'] },
-        { t: 'Cosy dinner with close friends',     g: ['social','warm','refined'] },
-        { t: 'Quiet night in at home',             g: ['introvert','reflective','smooth'] },
-        { t: 'Spontaneous adventure, no plan',     g: ['adventurous','bold','fresh'] },
-      ]},
-      { t: 'Which flavour profile appeals to you?', o: [
-        { t: 'Tropical & exotic (passion fruit, mango, coconut)', g: ['tropical','sweet','exotic'] },
-        { t: 'Fresh & fruity (strawberry, raspberry, watermelon)', g: ['fresh','fruity','vibrant'] },
-        { t: 'Citrusy & bright (mandarin, yuzu, apple)',           g: ['citrus','tart','bright'] },
-        { t: 'Soft & comforting (melon, guava, pineapple)',        g: ['smooth','comforting','balanced'] },
-      ]},
-      { t: 'Which word describes you best?', o: [
-        { t: 'Passionate', g: ['intense','passionate'] },
-        { t: 'Calm',       g: ['calm','smooth'] },
-        { t: 'Creative',   g: ['creative','original'] },
-        { t: 'Daring',     g: ['bold','daring'] },
-      ]},
-      { t: 'What kind of music do you listen to?', o: [
-        { t: 'Electronic / Dance',     g: ['energetic','modern'] },
-        { t: 'Jazz / Soul / Blues',    g: ['classic','smoky'] },
-        { t: 'Rock / Indie',           g: ['bold','intense'] },
-        { t: 'Pop / Reggaeton / Latin',g: ['festive','joyful'] },
-      ]},
-      { t: 'How do you feel about sweetness?', o: [
-        { t: 'Love it — the sweeter the better', g: ['very_sweet','fruity'] },
-        { t: 'A hint of sweetness is just right',g: ['semi_sweet','balanced'] },
-        { t: 'I prefer sour or bitter notes',    g: ['sour','dry','complex'] },
-        { t: 'I love sweet-sour contrasts',      g: ['bittersweet','complex'] },
-      ]},
-      { t: 'If you were a place, which would you be?', o: [
-        { t: 'A tropical beach at sunset',    g: ['tropical','relaxed','warm'] },
-        { t: 'A peaceful forest at dawn',     g: ['natural','fresh'] },
-        { t: 'A vibrant city at night',       g: ['urban','sophisticated'] },
-        { t: 'A lively colourful market',     g: ['vivid','fruity'] },
-      ]},
-    ],
-  },
+// ── Ingredientes reales del Shannon Iris Pub ─────────────────
+const ING={
+  pures_es:'puré de fresa Oxefruit, puré de mango Oxefruit, puré de maracuyá Oxefruit, puré de coco Oxefruit, puré de piña Oxefruit, puré de melón Oxefruit, puré de sandía Oxefruit, puré de guayaba Oxefruit, puré de manzana Oxefruit, puré de papaya Oxefruit, puré de pera Oxefruit, puré de plátano Oxefruit, puré de yuzu Oxefruit',
+  pures_en:'Oxefruit strawberry purée, Oxefruit mango purée, Oxefruit passion fruit purée, Oxefruit coconut purée, Oxefruit pineapple purée, Oxefruit melon purée, Oxefruit watermelon purée, Oxefruit guava purée, Oxefruit apple purée, Oxefruit papaya purée, Oxefruit pear purée, Oxefruit banana purée, Oxefruit yuzu purée',
+  siropes_es:'sirope de azúcar moreno Oxefruit, sirope de canela Oxefruit, sirope de flor de saúco Oxefruit, sirope de frambuesa Oxefruit, sirope de granadina Oxefruit, sirope de jengibre Oxefruit, sirope de mandarina Oxefruit, sirope de mango picante Oxefruit, sirope de mora Oxefruit, sirope de pomelo rojo Oxefruit, sirope de vainilla Oxefruit, sirope de té de limón Oxefruit, sirope de menta verde, sirope de orgeat (almendra)',
+  siropes_en:'Oxefruit brown sugar syrup, Oxefruit cinnamon syrup, Oxefruit elderflower syrup, Oxefruit raspberry syrup, Oxefruit grenadine, Oxefruit ginger syrup, Oxefruit mandarin syrup, Oxefruit spicy mango syrup, Oxefruit blackberry syrup, Oxefruit pink grapefruit syrup, Oxefruit vanilla syrup, Oxefruit lemon tea syrup, green mint syrup, orgeat almond syrup',
+  zumos_es:'zumo de lima Oxefruit, zumo de limón Oxefruit',
+  zumos_en:'Oxefruit lime juice, Oxefruit lemon juice',
+  gin_es:'Gin Tanqueray, Gin Tanqueray Rangpur, Gin Tanqueray Ten, Gin Beefeater, Gin Beefeater Black, Gin Bombay Bramble, Gin Bombay Sapphire, Gin Bombay Citrus Press, Gin Bombay Premier Cru, Gin Bombay Sunset, Gin Hendricks, Gin Nordes, Gin Bulldog, Gin Larios, Gin Larios 12, Gin Larios Rosé, Gin Roku, Gin Brockmans, Gin G-Vine, Gin Gold 999.9',
+  gin_en:'Tanqueray Gin, Tanqueray Rangpur, Tanqueray Ten, Beefeater Gin, Beefeater Black, Bombay Bramble, Bombay Sapphire, Bombay Citrus Press, Bombay Premier Cru, Bombay Sunset, Hendricks Gin, Nordes Gin, Bulldog Gin, Larios Gin, Larios 12, Larios Rosé, Roku Gin, Brockmans Gin, G-Vine Gin, Gold 999.9 Gin',
+  vodka_es:'Vodka Absolut, Vodka Smirnoff, Vodka Grey Goose, Vodka Eristoff, Vodka Amundsen, Vodka AU Raspberry, Vodka Aurum',
+  vodka_en:'Absolut Vodka, Smirnoff Vodka, Grey Goose Vodka, Eristoff Vodka, Amundsen Vodka, AU Raspberry Vodka, Aurum Vodka',
+  ron_es:'Ron Bacardi, Ron Bacardi Carta Negra, Ron Brugal Añejo, Ron Brugal Extraviejo, Ron Havana Club 7, Ron Havana Club Origen, Ron Havana 3, Ron Zacapa Centenario 23, Ron Matusalem 15, Ron Santa Teresa, Ron Legendario, Ron Cacique 500, Ron Bumbu, Ron Capitán Morgan',
+  ron_en:'Bacardi Rum, Bacardi Carta Negra, Brugal Añejo, Brugal Extraviejo, Havana Club 7, Havana Club Origen, Havana 3, Zacapa Centenario 23, Matusalem 15, Santa Teresa Rum, Legendario Rum, Cacique 500, Bumbu Rum, Captain Morgan',
+  tequila_es:'Tequila Jose Cuervo, Tequila Cuervo Reposado, Tequila 1800 Cristalino, Tequila 1800 Reposado, Tequila Don Julio Blanco, Tequila Don Julio Reposado, Tequila Olmeca Reposado, Tequila Patron Silver, Tequila Patron Reposado',
+  tequila_en:'Jose Cuervo Tequila, Cuervo Reposado, 1800 Cristalino, 1800 Reposado, Don Julio Blanco, Don Julio Reposado, Olmeca Reposado, Patron Silver, Patron Reposado',
+  whisky_es:'Whisky Jameson, Whisky Ballantines, Whisky Johnnie Walker Red Label, Whisky Johnnie Walker Black Label, Whisky Chivas Regal, Whisky Cardhu, Whisky Glenfiddich 12, Whisky Glenfiddich 18, Whisky Macallan 12, Whisky Hibiki Harmony, Bourbon Four Roses, Bourbon Four Roses Small Batch, Bourbon Jack Daniels, Bourbon Jack Daniels Apple, Bourbon Jack Daniels Fire, Bourbon Jack Daniels Honey, Coñac Hennessy, Coñac Courvoisier',
+  whisky_en:'Jameson Irish Whiskey, Ballantines Whisky, Johnnie Walker Red Label, Johnnie Walker Black Label, Chivas Regal, Cardhu, Glenfiddich 12, Glenfiddich 18, Macallan 12, Hibiki Harmony, Four Roses Bourbon, Four Roses Small Batch, Jack Daniels, Jack Daniels Apple, Jack Daniels Fire, Jack Daniels Honey, Hennessy Cognac, Courvoisier Cognac',
+  licores_es:'Aperol, Campari, Cointreau, Baileys, Amaretto Dissaronno, Amaretto Artemi, Malibu, Malibu Coco, Passoa, Blue Curaçao, Licor 43, Fernet Branca, Jagermeister, Kahlua, Tia Maria, Absenta, Sambuca, Limoncello, Cachaça, Vermut Martini Bianco, Vermut Martini Rosso, Vermut Martini Extra Dry, Vermut Martini Fiero, Southern Comfort, Petroni Spritz',
+  licores_en:'Aperol, Campari, Cointreau, Baileys, Amaretto Dissaronno, Amaretto Artemi, Malibu, Malibu Coconut, Passoa, Blue Curaçao, Licor 43, Fernet Branca, Jagermeister, Kahlua, Tia Maria, Absinthe, Sambuca, Limoncello, Cachaça, Martini Bianco, Martini Rosso, Martini Extra Dry, Martini Fiero, Southern Comfort, Petroni Spritz',
+  mixers_es:'tónica Fever Tree, tónica Schweppes, Coca-Cola, Coca-Cola Zero, Fanta Limón, Fanta Naranja, Red Bull, agua con gas Aquabona, Sprite, ginger ale RBLISS, soda RBLISS, bitter KAS, La Casera, Aquarius Limón, Aquarius Naranja, zumo de naranja natural',
+  mixers_en:'Fever Tree tonic, Schweppes tonic, Coca-Cola, Coca-Cola Zero, Fanta Lemon, Fanta Orange, Red Bull, Aquabona sparkling water, Sprite, RBLISS ginger ale, RBLISS soda, bitter KAS, La Casera, Aquarius Lemon, Aquarius Orange, fresh orange juice',
+  noalc_es:'Gin Tanqueray 0.0, Gin Beefeater Light 0.0, Gin Seagrams 0.0, granadina Rives sin alcohol, tónica Fever Tree, agua con gas, soda RBLISS, ginger ale RBLISS, Coca-Cola Zero, Red Bull',
+  noalc_en:'Tanqueray 0.0 gin, Beefeater Light 0.0 gin, Seagrams 0.0 gin, Rives alcohol-free grenadine, Fever Tree tonic, sparkling water, RBLISS soda, RBLISS ginger ale, Coca-Cola Zero, Red Bull',
 };
 
-// ── State ────────────────────────────────────────────────────
-let lang = 'en', withAlc = null, qIdx = 0, tags = [], loadInt, loadTick = 0;
-
-// ── Helpers ──────────────────────────────────────────────────
-function show(id) {
-  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-}
-function setLang(l) {
-  lang = l;
-  document.querySelectorAll('.lang-btn').forEach((b, i) =>
-    b.classList.toggle('active', (i === 0 && l === 'es') || (i === 1 && l === 'en'))
-  );
-  applyStart();
-}
-function applyStart() {
-  const t = L[lang];
-  document.getElementById('s-head').textContent    = t.head;
-  document.getElementById('s-desc').textContent    = t.desc;
-  document.getElementById('lbl-alc').textContent   = t.lAlc;
-  document.getElementById('lbl-noalc').textContent = t.lNoAlc;
-  document.getElementById('lbl-start').textContent = t.lStart;
-}
-function pickAlc(v) {
-  withAlc = v;
-  document.getElementById('btn-alc').classList.toggle('sel', v === true);
-  document.getElementById('btn-noalc').classList.toggle('sel', v === false);
-  document.getElementById('start-btn').classList.add('on');
-}
-function startQuiz() { qIdx = 0; tags = []; show('screen-questions'); renderQ(); }
-function renderQ() {
-  const qs = L[lang].qs, q = qs[qIdx], tot = qs.length;
-  document.getElementById('prog-fill').style.width = ((qIdx / tot) * 100) + '%';
-  document.getElementById('prog-lbl').textContent  = L[lang].prog(qIdx + 1, tot);
-  document.getElementById('q-text').textContent    = q.t;
-  const c = document.getElementById('q-opts'); c.innerHTML = '';
-  q.o.forEach(opt => {
-    const b = document.createElement('button');
-    b.className = 'q-opt'; b.textContent = opt.t;
-    b.onclick = () => pick(opt, b);
-    c.appendChild(b);
-  });
-}
-function pick(opt, btn) {
-  document.querySelectorAll('.q-opt').forEach(b => b.classList.remove('sel'));
-  btn.classList.add('sel');
-  tags = [...tags, ...opt.g];
-  setTimeout(() => { qIdx++; if (qIdx < L[lang].qs.length) renderQ(); else generate(); }, 300);
-}
-function tickLoad() {
-  const row = L[lang].ll[loadTick % 3];
-  document.getElementById('l-title').textContent = row[0];
-  document.getElementById('l-sub').textContent   = row[1];
-  loadTick++;
-}
-function startLoad() { loadTick = 0; tickLoad(); loadInt = setInterval(tickLoad, 1800); }
-
-// ── Prompt builder ───────────────────────────────────────────
-function buildPrompt() {
-  const isEs = lang === 'es';
-  const flavours = isEs
-    ? 'fresa, mango, maracuyá, coco, piña, yuzu, melón, sandía, frambuesa, guayaba, mandarina, manzana'
-    : 'strawberry, mango, passion fruit, coconut, pineapple, yuzu, melon, watermelon, raspberry, guava, mandarin, apple';
-  const alcMode = withAlc
-    ? (isEs ? 'CON ALCOHOL' : 'WITH ALCOHOL')
-    : (isEs ? 'SIN ALCOHOL (mocktail)' : 'WITHOUT ALCOHOL (mocktail)');
-  const bases = withAlc
-    ? (isEs ? 'ginebra, vodka, ron blanco, ron oscuro, tequila, whisky irlandés, Aperol, Cointreau, cava'
-             : 'gin, vodka, white rum, dark rum, tequila, Irish whiskey, Aperol, Cointreau, sparkling wine')
-    : (isEs ? 'agua con gas, tónica, ginger beer, zumo de manzana, agua de coco'
-             : 'sparkling water, tonic, ginger beer, apple juice, coconut water');
-  const profile = tags.join(', ');
-
-  if (isEs) return `Eres el bartender IA del Shannon Iris Pub, pub irlandés con cócteles artesanales.
-Perfil del cliente: ${profile}.
-Cóctel: ${alcMode}.
-SABORES DISPONIBLES (usa SOLO estos como base frutal): ${flavours}.
-BASES PERMITIDAS: ${bases}.
-COMPLEMENTOS: jarabe de azúcar, miel, agave, jengibre, lavanda, zumo de limón, zumo de lima, zumo de naranja, soda, leche de coco, menta fresca, jengibre fresco.
-GUARNICIONES: sal, azúcar en el borde, cáscara de cítrico, hoja de menta, rodaja de fruta, hielo, hielo frappé.
-Crea un cóctel único con nombre poético o irlandés.
-Responde ÚNICAMENTE con JSON puro sin backticks ni texto extra:
-{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"...","cantidad":"..."}],"pasos":["..."],"nota":"...","emoji":"..."}`;
-
-  return `You are the AI bartender at Shannon Iris Pub, an Irish pub with craft cocktails.
-Customer profile: ${profile}.
-Cocktail: ${alcMode}.
-AVAILABLE FLAVOURS (use ONLY these as fruit base): ${flavours}.
-PERMITTED BASES: ${bases}.
-EXTRAS: sugar syrup, honey, agave, ginger syrup, lavender syrup, lemon juice, lime juice, orange juice, soda, coconut milk, fresh mint, fresh ginger.
-GARNISHES: salt, sugar rim, citrus peel, mint leaf, fruit slice, ice, crushed ice.
-Create a unique cocktail with a poetic or Irish-inspired name.
-Respond ONLY with raw JSON, no backticks or extra text:
-{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"...","cantidad":"..."}],"pasos":["..."],"nota":"...","emoji":"..."}`;
-}
-
-// ── API call → backend proxy ─────────────────────────────────
-async function generate() {
-  show('screen-loading'); startLoad();
-  try {
-    const res = await fetch('/api/cocktail', {
-      method:  'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body:    JSON.stringify({ prompt: buildPrompt() }),
-    });
-    if (!res.ok) {
-      const err = await res.json().catch(() => ({}));
-      throw new Error(JSON.stringify(err));
-    }
-    const { text } = await res.json();
-    const s = text.indexOf('{'), e = text.lastIndexOf('}');
-    if (s < 0 || e < 0) throw new Error('No JSON in response:\n' + text.slice(0, 200));
-    const cocktail = JSON.parse(text.slice(s, e + 1));
-    clearInterval(loadInt);
-    renderResult(cocktail);
-  } catch (err) {
-    clearInterval(loadInt);
-    showError(err.message);
+// ── Traducciones y preguntas ─────────────────────────────────
+const L={
+  es:{
+    head:'Encuentra tu cóctel perfecto',
+    desc:'Responde unas preguntas y nuestro bartender IA creará un cóctel único con los ingredientes reales del Shannon Iris Pub.',
+    lAlc:'Con alcohol',lNoAlc:'Sin alcohol',lStart:'Comenzar →',
+    prog:(c,t)=>`${c} de ${t}`,
+    ll:[['Analizando tu personalidad…','Combinando tus sabores'],['Eligiendo los ingredientes…','Creando algo especial'],['¡Casi listo!','El toque final']],
+    sI:'Ingredientes',sP:'Preparación',sN:'Nota del bartender',mV:'Vaso',mT:'Técnica',
+    bR:'← Repetir el test',errTitle:'Algo salió mal',errHint:'Inténtalo de nuevo.',retry:'Reintentar',
+    qs:[
+      {t:'¿Cómo es tu noche perfecta?',o:[
+        {t:'Fiesta con mucha gente y música alta',g:['extrovertido','festivo','energético']},
+        {t:'Cena íntima con amigos cercanos',g:['social','cálido','refinado']},
+        {t:'Noche tranquila en casa',g:['introvertido','reflexivo','suave']},
+        {t:'Aventura espontánea, sin planes',g:['aventurero','audaz','fresco']}]},
+      {t:'¿Qué sabor te llama más?',o:[
+        {t:'Tropical y exótico (maracuyá, mango, coco)',g:['tropical','dulce','exótico']},
+        {t:'Fresco y frutal (fresa, frambuesa, sandía)',g:['fresco','frutal','vibrante']},
+        {t:'Cítrico y luminoso (yuzu, mandarina, lima)',g:['cítrico','ácido','luminoso']},
+        {t:'Suave y reconfortante (melón, guayaba, piña)',g:['suave','reconfortante','equilibrado']}]},
+      {t:'¿Qué base prefieres?',o:[
+        {t:'Ginebra — aromática y floral',g:['gin','floral','aromático']},
+        {t:'Ron — dulce y tropical',g:['ron','tropical','caribeño']},
+        {t:'Vodka — suave y versátil',g:['vodka','neutro','limpio']},
+        {t:'Sorpréndeme con lo que sea',g:['sorpresa','atrevido','creativo']}]},
+      {t:'¿Con qué palabra te identificas?',o:[
+        {t:'Apasionado/a',g:['intenso','apasionado']},
+        {t:'Tranquilo/a',g:['tranquilo','suave']},
+        {t:'Creativo/a',g:['creativo','original']},
+        {t:'Aventurero/a',g:['audaz','atrevido']}]},
+      {t:'¿Tu relación con lo dulce?',o:[
+        {t:'Me encanta, cuanto más dulce mejor',g:['muy_dulce','afrutado']},
+        {t:'Un toque dulce está perfecto',g:['semi_dulce','equilibrado']},
+        {t:'Prefiero ácido o amargo',g:['ácido','seco','complejo']},
+        {t:'Me gustan los contrastes dulce-ácido',g:['agridulce','complejo']}]},
+      {t:'¿Si fueras un lugar, cuál serías?',o:[
+        {t:'Una playa tropical al atardecer',g:['tropical','relajado','cálido']},
+        {t:'Un bosque tranquilo al amanecer',g:['natural','fresco']},
+        {t:'Una ciudad vibrante de noche',g:['urbano','sofisticado']},
+        {t:'Un pub irlandés lleno de vida',g:['irlandés','festivo','clásico']}]}
+    ]
+  },
+  en:{
+    head:'Find your perfect cocktail',
+    desc:'Answer a few questions and our AI bartender will craft a unique cocktail using the real ingredients at Shannon Iris Pub.',
+    lAlc:'With alcohol',lNoAlc:'Mocktail',lStart:"Let's go →",
+    prog:(c,t)=>`${c} of ${t}`,
+    ll:[['Analysing your personality…','Blending your flavours'],['Selecting ingredients…','Creating something special'],['Almost ready!','The final touch']],
+    sI:'Ingredients',sP:'Preparation',sN:"Bartender's note",mV:'Glass',mT:'Technique',
+    bR:'← Take the quiz again',errTitle:'Something went wrong',errHint:'Please try again.',retry:'Retry',
+    qs:[
+      {t:'What does your perfect evening look like?',o:[
+        {t:'Big party with loud music',g:['extrovert','festive','energetic']},
+        {t:'Cosy dinner with close friends',g:['social','warm','refined']},
+        {t:'Quiet night in at home',g:['introvert','reflective','smooth']},
+        {t:'Spontaneous adventure, no plan',g:['adventurous','bold','fresh']}]},
+      {t:'Which flavour profile appeals to you?',o:[
+        {t:'Tropical & exotic (passion fruit, mango, coconut)',g:['tropical','sweet','exotic']},
+        {t:'Fresh & fruity (strawberry, raspberry, watermelon)',g:['fresh','fruity','vibrant']},
+        {t:'Citrusy & bright (yuzu, mandarin, lime)',g:['citrus','tart','bright']},
+        {t:'Soft & comforting (melon, guava, pineapple)',g:['smooth','comforting','balanced']}]},
+      {t:'What base spirit do you prefer?',o:[
+        {t:'Gin — aromatic and floral',g:['gin','floral','aromatic']},
+        {t:'Rum — sweet and tropical',g:['rum','tropical','caribbean']},
+        {t:'Vodka — smooth and versatile',g:['vodka','neutral','clean']},
+        {t:'Surprise me with anything',g:['surprise','bold','creative']}]},
+      {t:'Which word describes you best?',o:[
+        {t:'Passionate',g:['intense','passionate']},
+        {t:'Calm',g:['calm','smooth']},
+        {t:'Creative',g:['creative','original']},
+        {t:'Daring',g:['bold','daring']}]},
+      {t:'How do you feel about sweetness?',o:[
+        {t:'Love it — the sweeter the better',g:['very_sweet','fruity']},
+        {t:'A hint of sweetness is just right',g:['semi_sweet','balanced']},
+        {t:'I prefer sour or bitter notes',g:['sour','dry','complex']},
+        {t:'I love sweet-sour contrasts',g:['bittersweet','complex']}]},
+      {t:'If you were a place, which would you be?',o:[
+        {t:'A tropical beach at sunset',g:['tropical','relaxed','warm']},
+        {t:'A peaceful forest at dawn',g:['natural','fresh']},
+        {t:'A vibrant city at night',g:['urban','sophisticated']},
+        {t:'A lively Irish pub',g:['irish','festive','classic']}]}
+    ]
   }
+};
+
+let lang='en',withAlc=null,qIdx=0,tags=[],loadInt,loadTick=0;
+
+function show(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');}
+function setLang(l){lang=l;document.querySelectorAll('.lang-btn').forEach((b,i)=>b.classList.toggle('active',(i===0&&l==='es')||(i===1&&l==='en')));applyStart();}
+function applyStart(){const t=L[lang];document.getElementById('s-head').textContent=t.head;document.getElementById('s-desc').textContent=t.desc;document.getElementById('lbl-alc').textContent=t.lAlc;document.getElementById('lbl-noalc').textContent=t.lNoAlc;document.getElementById('lbl-start').textContent=t.lStart;}
+function pickAlc(v){withAlc=v;document.getElementById('btn-alc').classList.toggle('sel',v===true);document.getElementById('btn-noalc').classList.toggle('sel',v===false);document.getElementById('start-btn').classList.add('on');}
+function startQuiz(){qIdx=0;tags=[];show('screen-questions');renderQ();}
+function renderQ(){
+  const qs=L[lang].qs,q=qs[qIdx],tot=qs.length;
+  document.getElementById('prog-fill').style.width=((qIdx/tot)*100)+'%';
+  document.getElementById('prog-lbl').textContent=L[lang].prog(qIdx+1,tot);
+  document.getElementById('q-text').textContent=q.t;
+  const c=document.getElementById('q-opts');c.innerHTML='';
+  q.o.forEach(opt=>{const b=document.createElement('button');b.className='q-opt';b.textContent=opt.t;b.onclick=()=>pick(opt,b);c.appendChild(b);});
+}
+function pick(opt,btn){
+  document.querySelectorAll('.q-opt').forEach(b=>b.classList.remove('sel'));btn.classList.add('sel');
+  tags=[...tags,...opt.g];
+  setTimeout(()=>{qIdx++;if(qIdx<L[lang].qs.length)renderQ();else generate();},300);
+}
+function tickLoad(){const row=L[lang].ll[loadTick%3];document.getElementById('l-title').textContent=row[0];document.getElementById('l-sub').textContent=row[1];loadTick++;}
+function startLoad(){loadTick=0;tickLoad();loadInt=setInterval(tickLoad,1800);}
+
+function buildPrompt(){
+  const isEs=lang==='es';
+  const profile=tags.join(', ');
+  const alcMode=withAlc?(isEs?'CON ALCOHOL':'WITH ALCOHOL'):(isEs?'SIN ALCOHOL (mocktail)':'WITHOUT ALCOHOL (mocktail)');
+  if(isEs) return `Eres el bartender IA del Shannon Iris Pub, un auténtico pub irlandés en España.
+Perfil del cliente: ${profile}
+El cóctel debe ser: ${alcMode}
+
+INGREDIENTES DISPONIBLES (usa SOLO estos):
+PURÉS DE FRUTA: ${ING.pures_es}
+SIROPES: ${ING.siropes_es}
+ZUMOS: ${ING.zumos_es}
+${withAlc?`GINEBRAS: ${ING.gin_es}\nVODKAS: ${ING.vodka_es}\nRONES: ${ING.ron_es}\nTEQUILAS: ${ING.tequila_es}\nWHISKIES Y BOURBONS: ${ING.whisky_es}\nLICORES: ${ING.licores_es}`:`BASES SIN ALCOHOL: ${ING.noalc_es}`}
+REFRESCOS Y MIXERS: ${ING.mixers_es}
+
+Crea un cóctel original con nombre poético o irlandés, adaptado al perfil del cliente.
+Responde ÚNICAMENTE con JSON puro sin backticks:
+{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"...","cantidad":"..."}],"pasos":["..."],"nota":"...","emoji":"..."}`;
+
+  return `You are the AI bartender at Shannon Iris Pub, an authentic Irish pub in Spain.
+Customer profile: ${profile}
+The cocktail must be: ${alcMode}
+
+AVAILABLE INGREDIENTS (use ONLY these):
+FRUIT PURÉES: ${ING.pures_en}
+SYRUPS: ${ING.siropes_en}
+JUICES: ${ING.zumos_en}
+${withAlc?`GINS: ${ING.gin_en}\nVODKAS: ${ING.vodka_en}\nRUMS: ${ING.ron_en}\nTEQUILAS: ${ING.tequila_en}\nWHISKIES & BOURBONS: ${ING.whisky_en}\nLIQUEURS: ${ING.licores_en}`:`ALCOHOL-FREE BASES: ${ING.noalc_en}`}
+MIXERS: ${ING.mixers_en}
+
+Create an original cocktail with a poetic or Irish-inspired name, tailored to the customer's profile.
+Respond ONLY with raw JSON, no backticks:
+{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"...","cantidad":"..."}],"pasos":["..."],"nota":"...","emoji":"..."}`;
 }
 
-// ── Render result ────────────────────────────────────────────
-function renderResult(c) {
-  const t = L[lang], isEs = lang === 'es';
-  const alcLbl = withAlc
-    ? (isEs ? 'Con alcohol' : 'With alcohol')
-    : (isEs ? 'Sin alcohol' : 'Mocktail');
-  const ings  = (c.ingredientes || []).map(i =>
-    `<div class="ing-i"><div class="idot"></div><span class="iqty">${i.cantidad || ''}</span><span>${i.nombre || ''}</span></div>`
-  ).join('');
-  const steps = (c.pasos || []).map((s, i) =>
-    `<div class="step-i"><span class="sn">${i + 1}.</span><span>${s}</span></div>`
-  ).join('');
+async function generate(){
+  show('screen-loading');startLoad();
+  try{
+    const res=await fetch('/api/cocktail',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({prompt:buildPrompt()})});
+    if(!res.ok){const err=await res.json().catch(()=>({}));throw new Error(JSON.stringify(err));}
+    const {text}=await res.json();
+    const s=text.indexOf('{'),e=text.lastIndexOf('}');
+    if(s<0||e<0)throw new Error('No JSON in response: '+text.slice(0,200));
+    const cocktail=JSON.parse(text.slice(s,e+1));
+    clearInterval(loadInt);renderResult(cocktail);
+  }catch(err){clearInterval(loadInt);showError(err.message);}
+}
 
-  document.getElementById('result-content').innerHTML = `
+function renderResult(c){
+  const t=L[lang],isEs=lang==='es';
+  const alcLbl=withAlc?(isEs?'Con alcohol':'With alcohol'):(isEs?'Sin alcohol':'Mocktail');
+  const ings=(c.ingredientes||[]).map(i=>`<div class="ing-i"><div class="idot"></div><span class="iqty">${i.cantidad||''}</span><span>${i.nombre||''}</span></div>`).join('');
+  const steps=(c.pasos||[]).map((s,i)=>`<div class="step-i"><span class="sn">${i+1}.</span><span>${s}</span></div>`).join('');
+  document.getElementById('result-content').innerHTML=`
     <div class="r-head">
-      <span class="r-emoji">${c.emoji || '🍹'}</span>
-      <div class="r-badges">
-        <span class="r-badge">${c.personalidad || ''}</span>
-        <span class="r-badge">${alcLbl}</span>
-      </div>
-      <div class="r-name">${c.nombre || ''}</div>
-      <div class="r-tagline">"${c.tagline || ''}"</div>
+      <span class="r-emoji">${c.emoji||'🍹'}</span>
+      <div class="r-badges"><span class="r-badge">${c.personalidad||''}</span><span class="r-badge">${alcLbl}</span></div>
+      <div class="r-name">${c.nombre||''}</div>
+      <div class="r-tagline">"${c.tagline||''}"</div>
     </div>
     <div class="gdiv"></div>
     <div class="card">
       <div class="clbl">${t.sI}</div>
-      <div class="meta-row">
-        <span class="meta-i">${t.mV}: <b>${c.vaso || ''}</b></span>
-        <span class="meta-i">${t.mT}: <b>${c.tecnica || ''}</b></span>
-      </div>
+      <div class="meta-row"><span class="meta-i">${t.mV}: <b>${c.vaso||''}</b></span><span class="meta-i">${t.mT}: <b>${c.tecnica||''}</b></span></div>
       <div class="ing-list">${ings}</div>
     </div>
-    <div class="card">
-      <div class="clbl">${t.sP}</div>
-      <div class="steps">${steps}</div>
-    </div>
-    <div class="card">
-      <div class="clbl">${t.sN}</div>
-      <div class="bt-note">${c.nota || ''}</div>
-    </div>
-    <div class="act-btns">
-      <button class="abtn out" onclick="resetApp()">${t.bR}</button>
-    </div>`;
+    <div class="card"><div class="clbl">${t.sP}</div><div class="steps">${steps}</div></div>
+    <div class="card"><div class="clbl">${t.sN}</div><div class="bt-note">${c.nota||''}</div></div>
+    <div class="act-btns"><button class="abtn out" onclick="resetApp()">${t.bR}</button></div>`;
   show('screen-result');
 }
 
-function showError(msg) {
-  const t = L[lang];
-  document.getElementById('result-content').innerHTML = `
+function showError(msg){
+  const t=L[lang];
+  document.getElementById('result-content').innerHTML=`
     <div class="err-wrap">
       <div class="r-emoji">⚠️</div>
       <div class="err-msg">${t.errTitle}.<br><small>${t.errHint}</small></div>
       <div class="err-detail">${msg}</div>
       <div class="act-btns" style="max-width:300px;margin:0 auto">
         <button class="abtn gold" onclick="generate()">↺ ${t.retry}</button>
-        <button class="abtn out"  onclick="resetApp()">← ${t.bR}</button>
+        <button class="abtn out" onclick="resetApp()">← ${t.bR}</button>
       </div>
     </div>`;
   show('screen-result');
 }
 
-function resetApp() {
-  qIdx = 0; tags = []; withAlc = null;
+function resetApp(){
+  qIdx=0;tags=[];withAlc=null;
   document.getElementById('btn-alc').classList.remove('sel');
   document.getElementById('btn-noalc').classList.remove('sel');
   document.getElementById('start-btn').classList.remove('on');
   show('screen-start');
 }
-
-// ── Init ─────────────────────────────────────────────────────
 applyStart();
 </script>
 </body>
