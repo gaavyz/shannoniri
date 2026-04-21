@@ -272,39 +272,114 @@ function pick(opt,btn){
 function tickLoad(){const row=L[lang].ll[loadTick%3];document.getElementById('l-title').textContent=row[0];document.getElementById('l-sub').textContent=row[1];loadTick++;}
 function startLoad(){loadTick=0;tickLoad();loadInt=setInterval(tickLoad,1800);}
 
+// ── Recetas reales del Shannon Iris Pub ──────────────────────
+const RECETAS = {
+  'Daiquiri': { ing: ['Ron Bacardi','Puré de fruta Oxefruit','Zumo de lima','Sirope de azúcar Oxefruit'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita con energía durante 12 segundos.','Cuela en copa fría.'], vaso: 'Copa cocktail', tecnica: 'Shaker' },
+  'Margarita': { ing: ['Tequila','Triple Seco','Zumo de lima','Puré de fruta Oxefruit'], pasos: ['Escarca el borde de la copa con sal.','Añade los ingredientes al shaker con hielo.','Agita bien y cuela en copa.'], vaso: 'Copa margarita', tecnica: 'Shaker' },
+  'Tequila Sunrise': { ing: ['Tequila','Triple Seco','Zumo de naranja','Granadina Oxefruit'], pasos: ['Llena el vaso de hielo y añade el tequila y el triple seco.','Rellena con zumo de naranja.','Añade la granadina despacio por el borde para el efecto degradado.'], vaso: 'Vaso highball', tecnica: 'Built' },
+  'Sex on the beach': { ing: ['Vodka','Licor de melocotón','Zumo de naranja','Granadina Oxefruit'], pasos: ['Llena el vaso de hielo.','Añade el vodka y el licor de melocotón.','Rellena con zumo de naranja.','Añade la granadina al final despacio.'], vaso: 'Vaso highball', tecnica: 'Built' },
+  'San Francisco': { ing: ['Licor de melocotón','Zumo de naranja','Granadina Oxefruit'], pasos: ['Llena el vaso de hielo.','Añade el licor de melocotón.','Rellena con zumo de naranja.','Añade la granadina al final despacio.'], vaso: 'Vaso highball', tecnica: 'Built' },
+  'Black Russian': { ing: ['Vodka','Tía María'], pasos: ['Llena el vaso de hielo.','Añade el vodka y la Tía María.','Remueve suavemente.'], vaso: 'Vaso old fashioned', tecnica: 'Built' },
+  'White Russian': { ing: ['Vodka','Tía María','Crema de leche'], pasos: ['Llena el vaso de hielo.','Añade el vodka y la Tía María.','Añade la crema de leche por encima con cuidado.'], vaso: 'Vaso old fashioned', tecnica: 'Built' },
+  'Piña colada': { ing: ['Ron Bacardi','Puré de coco Oxefruit','Puré de piña Oxefruit','Zumo de piña'], pasos: ['Añade todos los ingredientes a la batidora.','Bate hasta obtener una textura cremosa.','Sirve en copa fría.'], vaso: 'Copa hurricane', tecnica: 'Blended' },
+  'Zombie Luna': { ing: ['Ron añejo Havana Club','Brandy','Puré de mango Oxefruit','Zumo de lima','Zumo de piña','Sirope de té de limón Oxefruit'], pasos: ['Añade todos los ingredientes al shaker con hielo excepto el sirope.','Agita y cuela en vaso.','Añade el sirope de té de limón al final.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Tiki Shannon': { ing: ['Ginebra','Sirope de pomelo rojo Oxefruit','Sirope de flor de saúco Oxefruit','Sirope de jengibre Oxefruit','Zumo de lima','Ginger beer'], pasos: ['Añade la ginebra, los siropes y el zumo de lima al shaker con hielo.','Agita y cuela en vaso con hielo.','Completa con ginger beer fría.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Mahalo': { ing: ['Puré de plátano Oxefruit','Puré de piña Oxefruit','Arándanos congelados','Zumo de lima'], pasos: ['Añade todos los ingredientes a la batidora con hielo picado.','Bate hasta conseguir textura suave.','Sirve en vaso con hielo picado.'], vaso: 'Vaso highball', tecnica: 'Blended' },
+  'Mai Thai': { ing: ['Ron añejo Havana Club','Zumo de lima','Puré de fresa Oxefruit','Granadina Oxefruit','Zumo de piña'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita bien y cuela en vaso con hielo.','Decora con una rodaja de fruta.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Tiki Pineapple': { ing: ['Ginebra','Sirope de frambuesa Oxefruit','Puré de piña Oxefruit','Zumo de piña','Sirope orgeat (almendra) Oxefruit','Zumo de lima'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita con energía y cuela en vaso con hielo.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Bombie': { ing: ['Puré de mango Oxefruit','Puré de maracuyá Oxefruit','Plátano congelado','Sirope de coco','Zumo de piña'], pasos: ['Añade todos los ingredientes a la batidora con hielo picado.','Bate hasta obtener textura cremosa.','Sirve en vaso con hielo picado.'], vaso: 'Vaso highball', tecnica: 'Blended' },
+  'Sweet Shannon': { ing: ['Gin Beefeater 0.0','Sirope de jengibre Oxefruit','Puré de fresa Oxefruit','Sirope de canela Oxefruit','Zumo de lima','Soda'], pasos: ['Añade todos los ingredientes al shaker excepto la soda.','Agita y cuela en vaso con hielo.','Completa con soda fría.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Tequila Muerte': { ing: ['Tequila','Puré de mango picante Oxefruit','Sirope de jengibre Oxefruit','Zumo de lima','Ginger ale'], pasos: ['Añade el tequila, el puré, el sirope y el zumo al shaker.','Agita bien y cuela en vaso con hielo.','Completa con ginger ale frío.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Porn star Martini': { ing: ['Vodka','Puré de maracuyá Oxefruit','Puré de mango Oxefruit','Sirope de vainilla Oxefruit','Zumo de lima','Cava'], pasos: ['Añade todos los ingredientes excepto el cava al shaker con hielo.','Agita con fuerza y cuela en copa martini.','Sirve media copa de cava aparte.'], vaso: 'Copa martini + copa de cava', tecnica: 'Shaker' },
+  'Petroni Spritz': { ing: ['Petroni Spritz','Puré de maracuyá Oxefruit','Zumo de lima','Cava','Soda'], pasos: ['Añade el Petroni, el puré y el zumo de lima al vaso con hielo.','Añade el cava despacio.','Completa con soda y remueve suavemente.'], vaso: 'Copa balón', tecnica: 'Built' },
+  'Hugo Spritz': { ing: ['Vodka','Sirope de flor de saúco Oxefruit','Cava','Soda'], pasos: ['Añade el vodka y el sirope al vaso con hielo.','Añade el cava lentamente.','Completa con soda y decora con menta.'], vaso: 'Copa balón', tecnica: 'Built' },
+  'Espresso Martini': { ing: ['Vodka','Sirope de vainilla Oxefruit','Sirope de azúcar Oxefruit','Kahlúa'], pasos: ['Prepara un espresso y deja enfriar.','Añade todos los ingredientes al shaker con hielo.','Agita con fuerza hasta conseguir espuma.','Cuela en copa martini fría.'], vaso: 'Copa martini', tecnica: 'Shaker' },
+  'Shannon White': { ing: ['Ron Havana Club 3 años','Puré de coco Oxefruit','Puré de piña Oxefruit','Zumo de naranja','Granadina Oxefruit'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita bien y cuela en vaso con hielo.','Añade un dash de granadina al final.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Whiskey Pear': { ing: ['Whisky Jameson','Puré de pera Oxefruit','Puré de yuzu Oxefruit','Sprite'], pasos: ['Añade el whisky y los purés al shaker con hielo.','Agita y cuela en vaso con hielo.','Completa con Sprite frío.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Mule Rose': { ing: ['Bourbon Four Roses','Zumo de lima','Puré de sandía Oxefruit','Sirope de jengibre Oxefruit','Sirope de azúcar Oxefruit','Ginger beer'], pasos: ['Añade el bourbon, el zumo, el puré y los siropes al shaker.','Agita bien y cuela en vaso con hielo.','Completa con ginger beer fría.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Limonce Spritz': { ing: ['Limoncello','Sirope de flor de saúco Oxefruit','Zumo de lima','Cava','Soda'], pasos: ['Añade el limoncello, el sirope y el zumo al vaso con hielo.','Vierte el cava lentamente.','Completa con soda y remueve con suavidad.'], vaso: 'Copa balón', tecnica: 'Built' },
+  'Shannon Spritz': { ing: ['Vodka','Puré de pera Oxefruit','Zumo de lima','Sirope de canela Oxefruit','Cava','Soda'], pasos: ['Añade el vodka, el puré, el zumo y el sirope al vaso con hielo.','Añade el cava despacio.','Completa con soda y remueve suavemente.'], vaso: 'Copa balón', tecnica: 'Built' },
+  'Shannon Blackberry': { ing: ['Ron Havana Club 3 años','Sirope de sandía Oxefruit','Sirope de mora Oxefruit','Zumo de piña','Zumo de lima'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita con energía y cuela en vaso con hielo.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Black Shannon Jameson': { ing: ['Whisky Jameson','Zumo de piña','Sirope de frambuesa Oxefruit','Puré de maracuyá Oxefruit','Zumo de lima'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita bien y cuela en vaso con hielo.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Baileys Sensations': { ing: ['Licor Baileys','Tía María','Ron Malibu','Batido de chocolate'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita y cuela en vaso.'], vaso: 'Vaso old fashioned', tecnica: 'Shaker' },
+  'Lollipop': { ing: ['Amaretto','Granadina Oxefruit','Zumo de piña'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita y cuela en vaso con hielo.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Sweet Popcorn': { ing: ['Ron Bacardi','Puré de coco Oxefruit','Puré de piña Oxefruit','Sirope de palomitas Oxefruit','Zumo de piña'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita bien y cuela en vaso con hielo.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Mojito': { ing: ['Ron Bacardi','Lima fresca','Hierbabuena','Puré o sirope de sabor Oxefruit (fresa, mango, maracuyá, coco, piña, melón, sandía, frambuesa, guayaba, mandarina, manzana, yuzu)','Azúcar','7up'], pasos: ['Corta la lima en cubitos y ponla en el vaso.','Añade las hojas de hierbabuena y el azúcar.','Machaca suavemente con el mortero.','Añade el puré o sirope del sabor elegido y el ron.','Completa con 7up y remueve.'], vaso: 'Vaso highball', tecnica: 'Built' },
+  'Mojito (sin alcohol)': { ing: ['Lima fresca','Hierbabuena','Puré o sirope de sabor Oxefruit (fresa, mango, maracuyá, coco, piña, melón, sandía, frambuesa, guayaba, mandarina, manzana, yuzu)','Azúcar','7up'], pasos: ['Corta la lima en cubitos y ponla en el vaso.','Añade las hojas de hierbabuena y el azúcar.','Machaca suavemente con el mortero.','Añade el puré o sirope del sabor elegido.','Completa con 7up y remueve.'], vaso: 'Vaso highball', tecnica: 'Built' },
+  'Passion Té': { ing: ['Ron Bacardi','Puré de maracuyá Oxefruit','Sirope de té de limón Oxefruit','Sirope orgeat (almendra) Oxefruit','Zumo de lima','Zumo de naranja'], pasos: ['Añade todos los ingredientes al shaker con hielo.','Agita bien y cuela en vaso con hielo.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Long Island': { ing: ['Vodka','Ginebra','Ron Bacardi','Triple Seco','Sirope de azúcar Oxefruit','Zumo de lima','Coca-Cola'], pasos: ['Añade todos los destilados, el sirope y el zumo al shaker con hielo.','Agita y cuela en vaso con hielo.','Completa con Coca-Cola.'], vaso: 'Vaso highball', tecnica: 'Shaker' },
+  'Sexy Colada': { ing: ['Cachaça','Puré de coco Oxefruit','Zumo de lima','Puré de maracuyá Oxefruit','Zumo de piña','Sirope de vainilla Oxefruit','Sirope de canela Oxefruit','Mezcal'], pasos: ['Añade todos los ingredientes a la batidora con hielo.','Bate hasta textura cremosa y sirve en copa.'], vaso: 'Copa hurricane', tecnica: 'Blended' },
+  'Blue Lagoon': { ing: ['Blue Curaçao','Licor de melocotón','Zumo de lima','7up'], pasos: ['Añade el Curaçao, el licor y el zumo al vaso con hielo.','Completa con 7up fría.'], vaso: 'Vaso highball', tecnica: 'Built' },
+};
+
+// Cócteles con alcohol y sin alcohol
+const LISTA_CON_ALCOHOL = [
+  'Mojito','Sex on the beach','Tequila Muerte','Black Russian','White Russian',
+  'Blue Lagoon','Long Island','Whiskey Pear','Tequila Sunrise','Lollipop',
+  'Baileys Sensations','Porn star Martini','Daiquiri','Sexy colada','Espresso Martini',
+  'Shannon White','Shannon Blackberry','Mule Rose','Piña colada','Mai Thai','Margarita',
+  'Tiki Shannon','Zombie Luna','Passion Té','Black Shannon Jameson','Sweet Popcorn',
+  'Hugo Spritz','Petroni Spritz','Shannon Spritz','Limonce Spritz','Tiki Pineapple',
+];
+const LISTA_SIN_ALCOHOL = [
+  'Mojito (sin alcohol)','San Francisco','Piña colada','Mai Thai','Mahalo',
+  'Bombie','Sweet Shannon','Tiki Pineapple',
+];
+
 function buildPrompt(){
   const isEs=lang==='es';
   const profile=tags.join(', ');
-  const alcMode=withAlc?(isEs?'CON ALCOHOL':'WITH ALCOHOL'):(isEs?'SIN ALCOHOL (mocktail)':'WITHOUT ALCOHOL (mocktail)');
+  const lista = withAlc ? LISTA_CON_ALCOHOL : LISTA_SIN_ALCOHOL;
+  const recetasTexto = lista.map(nombre => {
+    const r = RECETAS[nombre];
+    if(!r) return `${nombre}: ingredientes no especificados`;
+    return `${nombre} | Ingredientes: ${r.ing.join(', ')} | Vaso: ${r.vaso} | Técnica: ${r.tecnica}`;
+  }).join('\n');
+
   if(isEs) return `Eres el bartender IA del Shannon Iris Pub, un auténtico pub irlandés en España.
-Perfil del cliente: ${profile}
-El cóctel debe ser: ${alcMode}
 
-INGREDIENTES DISPONIBLES (usa SOLO estos):
-PURÉS DE FRUTA: ${ING.pures_es}
-SIROPES: ${ING.siropes_es}
-ZUMOS: ${ING.zumos_es}
-${withAlc?`GINEBRAS: ${ING.gin_es}\nVODKAS: ${ING.vodka_es}\nRONES: ${ING.ron_es}\nTEQUILAS: ${ING.tequila_es}\nWHISKIES Y BOURBONS: ${ING.whisky_es}\nLICORES: ${ING.licores_es}`:`BASES SIN ALCOHOL: ${ING.noalc_es}`}
-REFRESCOS Y MIXERS: ${ING.mixers_es}
+Perfil de personalidad del cliente: ${profile}
+El cliente quiere un cóctel: ${withAlc?'CON ALCOHOL':'SIN ALCOHOL'}
 
-Crea un cóctel original con nombre poético o irlandés, adaptado al perfil del cliente.
-Responde ÚNICAMENTE con JSON puro sin backticks:
-{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"...","cantidad":"..."}],"pasos":["..."],"nota":"...","emoji":"..."}`;
+CARTA DE CÓCTELES DEL PUB (elige SOLO de esta lista):
+${recetasTexto}
+
+INSTRUCCIONES IMPORTANTES:
+- Elige el cóctel que MEJOR encaje con la personalidad del cliente
+- NO inventes cócteles nuevos — solo los de la lista
+- Si elige un Mojito (con o sin alcohol), debe especificar el sabor concreto de Oxefruit que mejor encaje con la personalidad del cliente (fresa, mango, maracuyá, coco, piña, melón, sandía, frambuesa, guayaba, mandarina, manzana o yuzu) y reflejarlo en el nombre (ej: "Mojito de Mango") y en los ingredientes
+- En "ingredientes" pon SOLO los nombres de los ingredientes, SIN cantidades y SIN hielo
+- En "pasos" describe la preparación de forma atractiva
+- Adapta el tagline y la nota a la personalidad del cliente
+
+Responde ÚNICAMENTE con JSON puro sin backticks ni texto extra:
+{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"ingrediente sin cantidad"}],"pasos":["..."],"nota":"...","emoji":"..."}`;
+
+  // Traducción inglés de ingredientes para el prompt EN
+  const recetasEN = lista.map(nombre => {
+    const r = RECETAS[nombre];
+    if(!r) return `${nombre}`;
+    return `${nombre} | Ingredients: ${r.ing.join(', ')} | Glass: ${r.vaso} | Technique: ${r.tecnica}`;
+  }).join('\n');
 
   return `You are the AI bartender at Shannon Iris Pub, an authentic Irish pub in Spain.
-Customer profile: ${profile}
-The cocktail must be: ${alcMode}
 
-AVAILABLE INGREDIENTS (use ONLY these):
-FRUIT PURÉES: ${ING.pures_en}
-SYRUPS: ${ING.siropes_en}
-JUICES: ${ING.zumos_en}
-${withAlc?`GINS: ${ING.gin_en}\nVODKAS: ${ING.vodka_en}\nRUMS: ${ING.ron_en}\nTEQUILAS: ${ING.tequila_en}\nWHISKIES & BOURBONS: ${ING.whisky_en}\nLIQUEURS: ${ING.licores_en}`:`ALCOHOL-FREE BASES: ${ING.noalc_en}`}
-MIXERS: ${ING.mixers_en}
+Customer personality profile: ${profile}
+The customer wants a cocktail: ${withAlc?'WITH ALCOHOL':'WITHOUT ALCOHOL'}
 
-Create an original cocktail with a poetic or Irish-inspired name, tailored to the customer's profile.
-Respond ONLY with raw JSON, no backticks:
-{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"...","cantidad":"..."}],"pasos":["..."],"nota":"...","emoji":"..."}`;
+PUB COCKTAIL MENU (choose ONLY from this list):
+${recetasEN}
+
+IMPORTANT INSTRUCTIONS:
+- Choose the cocktail that BEST matches the customer's personality
+- Do NOT invent new cocktails — only from the list
+- If the cocktail chosen is a Mojito (with or without alcohol), specify the exact Oxefruit flavour that best matches the customer's personality (strawberry, mango, passion fruit, coconut, pineapple, melon, watermelon, raspberry, guava, mandarin, apple or yuzu) and reflect it in the name (e.g. "Mango Mojito") and ingredients
+- In "ingredientes" list ONLY ingredient names, NO quantities and NO ice
+- In "pasos" describe the preparation in an engaging way
+- Adapt the tagline and note to the customer's personality
+
+Respond ONLY with raw JSON, no backticks or extra text:
+{"nombre":"...","tagline":"...","personalidad":"...","vaso":"...","tecnica":"...","ingredientes":[{"nombre":"ingredient name only"}],"pasos":["..."],"nota":"...","emoji":"..."}`;
 }
 
 async function generate(){
@@ -323,7 +398,7 @@ async function generate(){
 function renderResult(c){
   const t=L[lang],isEs=lang==='es';
   const alcLbl=withAlc?(isEs?'Con alcohol':'With alcohol'):(isEs?'Sin alcohol':'Mocktail');
-  const ings=(c.ingredientes||[]).map(i=>`<div class="ing-i"><div class="idot"></div><span class="iqty">${i.cantidad||''}</span><span>${i.nombre||''}</span></div>`).join('');
+  const ings=(c.ingredientes||[]).map(i=>`<div class="ing-i"><div class="idot"></div><span>${i.nombre||i||''}</span></div>`).join('');
   const steps=(c.pasos||[]).map((s,i)=>`<div class="step-i"><span class="sn">${i+1}.</span><span>${s}</span></div>`).join('');
   document.getElementById('result-content').innerHTML=`
     <div class="r-head">
