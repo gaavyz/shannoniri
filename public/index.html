@@ -410,10 +410,8 @@ function renderResult(c){
     <div class="gdiv"></div>
     <div class="card">
       <div class="clbl">${t.sI}</div>
-      <div class="meta-row"><span class="meta-i">${t.mV}: <b>${c.vaso||''}</b></span><span class="meta-i">${t.mT}: <b>${c.tecnica||''}</b></span></div>
       <div class="ing-list">${ings}</div>
     </div>
-    <div class="card"><div class="clbl">${t.sP}</div><div class="steps">${steps}</div></div>
     <div class="card"><div class="clbl">${t.sN}</div><div class="bt-note">${c.nota||''}</div></div>
     <div class="act-btns"><button class="abtn out" onclick="resetApp()">${t.bR}</button></div>`;
   show('screen-result');
